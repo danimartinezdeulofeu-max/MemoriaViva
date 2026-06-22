@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const l = document.getElementById('llista-punts');
         if (!l) return;
         const v = JSON.parse(localStorage.getItem('visites')) || [];
-        const pts = { 'suro': 'Museu del Suro', 'pla': 'Josep Pla', 'litoral': 'El Litoral', 'gastronomia': 'Gastronomia' };
+        const pts = { 'suro': 'Museu del Suro', 'pla': 'Josep Pla', 'litoral': 'El Litoral', 'gastronomia': 'Gastronomia', 'carnaval': 'Carnaval i Primavera', 'calendari': 'El Calendari de la Memòria', 'evolucio': 'Palafrugell, un viatge a través del temps' };
         l.innerHTML = Object.keys(pts).map(k => `<li>${v.includes(k)?'✅':'⏳'} ${pts[k]}</li>`).join('');
     }
 
