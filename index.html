@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8D6E63">
+    <link rel="apple-touch-icon" href="Logo app.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palafrugell, Memòria Viva</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #FDF6E3; color: #5D4037; margin: 0; }
+        nav { background-color: #8D6E63; padding: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+        nav a { color: white; text-decoration: none; font-weight: bold; cursor: pointer; padding: 5px 10px; }
+        .user-actions { border-left: 1px solid #fff; padding-left: 15px; }
+        .content { padding: 20px; display: none; max-width: 800px; margin: auto; }
+        .active { display: block; }
+        .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; line-height: 1.6; }
+        h2 { color: #5D4037; border-bottom: 2px solid #8D6E63; padding-bottom: 10px; }
+        #map { height: 400px; width: 100%; border-radius: 15px; border: 2px solid #8D6E63; }
+    </style>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+    /* Això elimina el text lleig que et sortia a la pantalla */
+    #map { 
+        height: 400px !important; 
+        width: 100% !important; 
+        display: block !important; 
+        z-index: 1 !important; 
+        border-radius: 15px; 
+        border: 2px solid #8D6E63;
+        background-color: #f0f0f0; /* Color gris per veure que el mapa existeix */
+    }
+</style>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const map = L.map('map').setView([41.9333, 3.1667], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    // 1. Demanar ubicació
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                // Centrar el mapa a la ubicació de l'usuari
+                map.setView([lat, lng], 15);
+
+                // Afegir un marcador a la ubicació
+                L.marker([lat, lng]).addTo(map)
+                    .bindPopup("Estàs aquí!")
+                    .openPopup();
+            },
+            () => {
+                alert("No s'ha pogut obtenir la teva ubicació. Et deixem a Palafrugell.");
+            }
+        );
+    } else {
+        alert("El teu navegador no suporta geolocalització.");
+    }
+});
+    </script>
+</head>
+<body>
+
+<nav>
+    <div class="nav-links">
+        <a onclick="showSection('inicio')">Inicio</a>
+        <a onclick="showSection('evolucio')">Palafrugell, un viatge a través del temps</a>
+        <a onclick="showSection('suro')">Suro</a>
+        <a onclick="showSection('pla')">Josep Pla</a>
+        <a onclick="showSection('litoral')">Litoral</a>
+        <a onclick="showSection('gastronomia')">Gastronomia</a>
+        <a onclick="showSection('carnaval')">Carnaval i Primavera: La resistència disfressada</a>
+        <a onclick="showSection('calendari')">El Calendari de la Memòria</a>
+        <a onclick="showSection('participa')">Participa</a>
+    </div>
+    
+    <div class="user-actions" id="nav-user-actions">
+        </div>
+</nav>
+
+    <!-- INICIO (MAPA) -->
+    <div id="inicio" class="content active">
+        <h2>Mapa Històric</h2>
+        <div id="map"></div>
+    </div>
+
+    <!-- SURO -->
+    <div id="suro" class="content">
+        <div class="card">
+            <h2>El Suro</h2>
+            <p>El mes d'agost del 1900, Joan Miquel i Avellí i l'alemany Enric Vincke van fundar a Palafrugell l'empresa Miquel i Vincke, dedicada a la fabricació d'articles de suro. L'any següent, amb la incorporació de Pau Meyer, va passar a anomenar-se Miquel, Vincke i Meyer. Gràcies a la mecanització i al suport financer, la companyia va créixer ràpidament i va passar de 500 treballadors el 1905 a 1.000 el 1907, amb una producció d'un milió de taps diaris. Després de la mort de Meyer el 1910, l'empresa va recuperar el seu nom original. L'esclat de la Primera Guerra Mundial va afectar negativament el negoci a causa de la nacionalitat alemanya de Vincke, cosa que va incloure la firma a les llistes negres de França i la Gran Bretanya. Per solucionar aquesta crisi, el 1916 es va transformar en la societat anònima Manufactures del Suro SA. Durant els anys següents, l'empresa es va expandir amb la compra de fàbriques a Palamós (oficina exportadora) i Palafrugell (creant la filial Trefinos SA), i el 1925 ja disposava de centres a Figueres, Càceres i Begur, a més de delegacions comercials a Londres i Nova York. El 1930, després d'una època de dura competència, la companyia nord-americana Armstrong Cork Company va adquirir l'empresa, la va reanomenar Manufacturas del Corcho Armstrong SA i va traslladar la seu a Sevilla. El fundador Joan Miquel va deixar l'empresa per motius de salut i va morir el 1934, mentre que Vincke va romandre al consell d'administració fins a la seva mort el 1958. Després de diverses dècades de decadència, l'empresa va canviar la seva denominació al voltant del 1980 a Armstrong World Industries SA i va tornar a Palafrugell. Actualment, el negoci manté uns 400 treballadors repartits entre la fàbrica principal i la filial Trefinos SL. A més, l'any 2010, les antigues instal·lacions de la Bòbila Vella es van rehabilitar per esdevenir un espai firal i cultural de la vila.</p>
+        </div>
+    </div>
+
+    <!-- JOSEP PLA -->
+    <div id="pla" class="content">
+        <div class="card">
+            <h2>Josep Pla</h2>
+            <p>Josep Pla (1897-1981), nascut a Palafrugell en el si d'una família acomodada, va abandonar els estudis de Medicina i Dret per dedicar-se professionalment al periodisme i a les lletres. A partir del 1920 es va convertir en un destacat corresponsal internacional, viatjant per les principals capitals d'Europa i col·laborant amb importants capçaleres de l'època. La seva activitat política el va portar a ser diputat de la Mancomunitat de Catalunya el 1921 i, posteriorment, a exiliar-se durant la dictadura de Primo de Rivera i la Guerra Civil Espanyola, període en què es va establir a França i Itàlia col·laborant amb Francesc Cambó. El 1925 va consolidar el seu característic estil literari —definit per l'observació minuciosa de la realitat, el rebuig a la ficció i la crònica viatgera— amb la publicació dels seus primers llibres, Coses vistes i Rússia. En finalitzar la guerra civil, Pla va tornar a Espanya i es va distanciar de les tensions polítiques urbanes, refugiant-se en el contacte quotidià amb els pescadors i pagesos de l'Empordà. Durant la postguerra, va començar una col·laboració ininterrompuda (1940-1976) amb la revista Destino a través de la seva secció "Calendario sin fechas", fet que li va atorgar una gran estabilitat econòmica i va fidelitzar el seu públic. Tot i que inicialment va publicar en castellà a causa de la censura, a partir del 1946 va reprendre l'escriptura en català, sent acollit amb un enorme entusiasme per un públic que el va encimbellar com un pilar fonamental per a la supervivència de la llengua. En la seva maduresa, va alternar la vida al mas Pla de Llofriu amb llargs viatges en vaixells de càrrega per tot el món, els quals aprofitava per documentar-se i escriure. Va morir el 23 d'abril de 1981, el dia de Sant Jordi, deixant un colossal llegat de 45 volums i més de 30.000 pàgines en la seva Obra Completa, iniciada amb el seu cèlebre llibre El quadern gris, que continua sent un monument indiscutible de la literatura catalana contemporània.</p>
+        </div>
+    </div>
+    <!-- LITORAL -->
+    <div id="litoral" class="content">
+        <div class="card">
+            <h2>La Mar de la Indústria</h2>
+            <p>El litoral de Palafrugell, amb les seves cales i platges, ha estat històricament un espai de gran rellevància per a la vila. A més de ser un lloc de lleure i turisme, ha tingut un paper fonamental en el desenvolupament econòmic i industrial de la regió. Les activitats marítimes, com la pesca i el comerç, han estat claus per a la prosperitat local. La proximitat al mar ha permès establir fàbriques i indústries relacionades amb el suro, el marisc i altres productes del mar, contribuint així a la creació d'ocupació i al creixement econòmic de Palafrugell.</p>
+            <p>El litoral de Palafrugell no és només un paisatge de postal; és la sortida al món de la nostra indústria surera. Antigament, des de cales com Llafranc o Tamariu, les barques carregades de taps de suro partien cap als ports de tot el món, connectant els nostres boscos amb la indústria global del segle XX.
+            <p>A més, aquestes mateixes roques i cales van ser testimoni de la vida dura del pescador i, durant anys, dels amagatalls dels contrabandistes que aprofitaven la nit per moure mercaderies en una costa que no descansava. Avui, la pedra i l'aigua encara guarden els secrets d'aquest passat de navegants, estraperlistes i el naixement d'un turisme que ho transformaria tot per sempre.
+            <p>Així mateix, el litoral ha estat un punt de connexió amb altres regions i països, facilitant l'intercanvi comercial i cultural. Els ports i cales han servit com a punts d'entrada i sortida de mercaderies, establint vincles amb altres comunitats costaneres i contribuint a la diversitat cultural de la vila.</p>
+            <p>A més, el litoral ha estat un punt de trobada cultural i social per als habitants de la vila. Les festes tradicionals, les celebracions i els esdeveniments esportius han tingut lloc a les platges i cales, reforçant el sentiment de comunitat i identitat local. La preservació del patrimoni natural i arquitectònic del litoral és essencial per mantenir viva la història i la cultura de Palafrugell.</p>
+            <p>Avui dia, el litoral continua sent un atractiu turístic i cultural, amb espais naturals protegits i activitats recreatives que permeten als visitants gaudir de la bellesa del mar Mediterrani. La combinació de patrimoni industrial i natural fa del litoral de Palafrugell un lloc únic que reflecteix la història i la identitat de la vila.</p>
+        </div>
+    </div>
+
+    <!-- GASTRONOMIA -->
+    <div id="gastronomia" class="content">
+        <div class="card">
+            <h2>Sabors de Memòria</h2>
+            <p>La gastronomia de Palafrugell és un reflex de la seva història i cultura, amb una rica tradició culinària que combina productes del mar i de la terra. Els plats típics de la regió inclouen especialitats com el suquet de peix, les sardines a la brasa, l'escudella i carn d'olla, així com una varietat de tapes i aperitius que es poden degustar en els nombrosos restaurants i tavernes locals. La influència del suro en la conservació dels aliments ha estat significativa, ja que els taps de suro han permès preservar vins i altres productes durant més temps, contribuint a la qualitat i sabor dels plats tradicionals.</p>
+            <p>La cuina de Palafrugell és el resultat d'un diàleg constant entre dos mons: la terra, dominada pel suro i l'agricultura, i la mar. Els nostres plats no van néixer a les cartes dels restaurants, sinó a les taules de les llars obreres, on l'enginy era la recepta principal.
+            <p>Recordar els nostres sabors és homenatjar la "cuina de subsistència": com els pescadors aprofitaven les captures menys comercialitzables per fer un suquet de barca, o com els treballadors de les fàbriques de suro portaven a la bossa allò que l'horta els donava. La gastronomia de Palafrugell és, en essència, la memòria d'un poble que va aprendre a transformar el que tenia a l'abast en una taula plena de dignitat i història.
+            <p>Avui, els restaurants de Palafrugell continuen aquesta tradició, reinterpretant els plats clàssics amb un toc modern i creatiu. Els xefs locals utilitzen ingredients frescos i de proximitat, mantenint viva la cultura gastronòmica de la regió i oferint als visitants una experiència culinària autèntica i memorable.</p>
+            <p>A més, la gastronomia de Palafrugell és un element clau en les festes i celebracions locals, on els plats tradicionals es combinen amb música, dansa i altres expressions culturals. Aquestes festivitats ofereixen als residents i visitants l'oportunitat de gaudir de la riquesa culinària de la vila mentre es connecten amb la seva història i identitat.</p>
+        </div>
+    </div>
+
+    <!-- Carnaval i Primavera: La resistència disfressada -->
+    <div id="carnaval" class="content">
+        <div class="card">
+            <h2>Carnaval i Primavera: La resistència disfressada</h2>
+            <p>La història de les nostres festes és, en realitat, una història d'enginy contra la censura. Durant el franquisme, el Carnaval va ser prohibit a tota Espanya, però a Palafrugell, l'esperit de la vila no es va doblegar. L'any 1963, el Centre Fraternal i l'Ajuntament van prendre una decisió valenta: desafiar la prohibició.</p>
+            <p>Per burlar les autoritats, van batejar la festa amb un nom nou i la van traslladar a l'estació de les flors. Així van néixer les "Festes de Primavera", que no eren res més que un Carnaval encubert que permetia al poble recuperar la sàtira, la disfressa i la llibertat d'expressió. Allò que va començar com un acte de resistència clandestina, s'ha convertit amb el pas de les dècades en la celebració més participativa i identitària de Palafrugell.</p>
+            <p>Avui, quan sortim al carrer, no només celebrem la primavera; celebrem la capacitat del nostre poble per trobar la llum fins i tot en els temps més foscos.</p>
+            <p>Aquesta història ens recorda que la cultura i la tradició poden ser formes de resistència i que, fins i tot en les circumstàncies més difícils, la comunitat pot trobar maneres de mantenir viva la seva identitat i expressió.</p>
+            <p>Les Festes de Primavera continuen sent un moment de trobada per a tots els habitants de Palafrugell, on la música, el ball i la creativitat es combinen per crear una experiència única que celebra la història i la cultura de la vila. La participació activa dels ciutadans en la preparació i celebració d'aquestes festes és un testimoni del fort sentiment de comunitat i orgull local que caracteritza Palafrugell.</p>
+        </div>
+    </div>
+
+    <!-- El Calendari de la Memòria --> 
+    <div id="calendari" class="content">
+        <div class="card">
+            <h2>El Calendari de la Memòria</h2>
+            <p>El calendari de Palafrugell és un testimoni viu de la nostra història i cultura, amb una sèrie d'esdeveniments i celebracions que marquen el ritme de la vida a la vila al llarg de l'any. Des de les festes tradicionals fins als esdeveniments culturals i esportius, el calendari reflecteix la diversitat i riquesa de la comunitat local. Les festivitats com les Festes de Primavera, el Carnaval, la Fira del Suro i altres celebracions locals són moments clau que reuneixen els habitants i visitants per compartir experiències, tradicions i valors culturals.</p>
+            <p>A més, el calendari inclou activitats educatives, exposicions i tallers que promouen la participació ciutadana i fomenten el coneixement de la història i patrimoni de Palafrugell. Aquestes iniciatives contribueixen a mantenir viva la memòria col·lectiva i a transmetre-la a les noves generacions, assegurant que les tradicions i valors locals continuïn sent una part integral de la identitat de la vila.</p>
+            <p>El calendari també serveix com a eina per a la promoció del turisme cultural, atraient visitants interessats en descobrir la història, gastronomia i cultura de Palafrugell. La combinació d'esdeveniments tradicionals i activitats modernes crea una oferta atractiva que permet als visitants experimentar la vila en tota la seva riquesa i diversitat.</p>
+            <p>La Garoinada (Del 16 de gener al 29 de març): Aquest homenatge al mar d'hivern recorda quan els pescadors locals, aprofitant que la mar estava massa picada per sortir a pescar peix, recol·lectaven garoines a les roques. És la nostra forma de recordar la relació directa entre el pescador i el producte de proximitat.</p>
+            <p>Festes de Primavera (23 de maig al 8 de juny): L'origen d'aquestes festes es remunta a l'any 1963, com un acte de resistència contra la prohibició del Carnaval durant el franquisme. Avui, continuen sent l'expressió màxima de la creativitat col·lectiva amb la seva famosa Gala de Primavera.</p>
+            <p>Flor i Violes (Del 30 d'abril al 3 de maig): Més que una mostra floral, és una celebració que transforma l'arquitectura i els racons més emblemàtics de la vila. És l'esclat de la creativitat i el bon gust que sempre ha definit la nostra gent.</p>
+            <p>Festa Major (Del 11 al 20 de juliol): El punt de trobada per excel·lència. Des de generacions, la Festa Major (celebrada al voltant del 20 de juliol) marca el ritme de la nostra comunitat, sent l'espai de retrobament on les velles amistats i les noves generacions mantenen viu l'orgull de ser de Palafrugell.</p>
+            <p>Cantada d'Havaneres de Calella (Primer dissabte de juliol): Des de 1966, el "Cant de Taverna" ens connecta amb els nostres avantpassats que van fer les Amèriques. Aquelles cançons de mariner, de nostàlgia i de mar, no són només música; són el testimoni sonor de les relacions que durant el segle XIX van unir la Costa Brava amb Cuba.</p>
+            <p>Diada de la República (14 d'abril): Palafrugell té una història fortament marcada pel seu compromís polític i social. Aquesta data, que es commemora amb diversos actes, recorda el fort arrelament dels valors democràtics i republicans que han definit gran part de la vida política i social del segle XX a la vila.</p>
+        </div>
+    </div>
+
+    <!-- Palafrugell, un viatge a través del temps -->
+    <div id="evolucio" class="content">
+        <div class="card">
+            <h2>Palafrugell, un viatge a través del temps</h2>
+            <p>Palafrugell ha experimentat una transformació notable al llarg dels anys, passant d'una vila amb una economia basada en la pesca i l'agricultura a un centre industrial i turístic. La seva història està marcada per l'evolució de la indústria surera, que va jugar un paper crucial en el desenvolupament econòmic de la regió. Amb el temps, Palafrugell ha sabut adaptar-se als canvis socials i econòmics, mantenint viva la seva identitat cultural i històrica.</p>
+            <p>Els inicis: Els pobladors de la terra i el mar</p>
+            <p>La història de Palafrugell comença molt abans de la vila que coneixem. Des de l'edat del bronze, els nostres turons van ser refugi de comunitats nòmades i seminòmades que buscaven punts elevats per controlar el territori. Amb l'arribada dels ibers (pobles de la cultura dels indiketes), el paisatge va començar a poblar-se amb assentaments estables. Aquests primers pobladors van entendre ràpidament el valor d'una terra que s'abocava al Mediterrani: la seva riquesa no era només agrícola, sinó comercial. La posició geogràfica de Palafrugell, com a nexe entre el massís de les Gavarres i la costa, va ser el nostre primer gran actiu.</p>
+            <p>L’època romana i la medieval: La construcció del refugi</p>
+            <p>Amb la romanització, la nostra zona es va integrar en les rutes de comunicació que unien la Tarraconensis amb el sud de França. Però van ser els segles posteriors, durant l'edat mitjana, els que van donar forma a l'ànima del poble. Palafrugell va néixer com un nucli defensiu. La presència de la mar, sovint una via per on arribaven les incursions pirates, va obligar els nostres avantpassats a protegir-se. La vila es va articular al voltant de l'església de Sant Martí, amb una estructura de carrers estrets i muralles que encara avui es poden resseguir. Durant segles, la vida va ser un equilibri constant: el conreu de la terra i la por a l'horitzó marítim.</p>
+            <p>L'esclat del suro: La gran transformació (Segle XIX - XX)</p>
+            <p>Si hi ha un moment en què Palafrugell fa el salt cap a la modernitat, és amb l'auge de la indústria surera. El suro va canviar-ho tot. De ser un poble agrícola i mariner, vam passar a ser un centre industrial que exportava taps a mig món: des de les grans bodegues de vins de França fins als mercats de les Amèriques. Aquesta revolució industrial va portar una classe obrera organitzada, culta i amb una forta consciència de classe. Els tallers de suro no només fabricaven taps; també van crear una societat dinàmica, amb ateneus, corals i premsa local, que van convertir el poble en un referent de progrés a tota Catalunya.</p>
+            <p>Resistència i contemporaneïtat</p>
+            <p>El segle XX va posar a prova aquesta identitat. Durant el franquisme, la nostra gent va lluitar per mantenir viva la llengua i la cultura a través de l'enginy, com vam veure amb la transformació del Carnaval en les Festes de Primavera. Avui, Palafrugell és el resultat de totes aquestes capes: som un mosaic que conserva la petjada dels ibers, el traç medieval del nostre centre històric i l'herència industrial que ens defineix com un poble de treballadors i creadors. Som, en definitiva, "Memòria Viva".</p>
+        </div>
+    </div>
+
+ <!-- PARTICIPA -->
+    <div id="participa" class="content">
+        <div class="card">
+            <h2>Comparteix la teva història</h2>
+            <form action="https://formspree.io/f/xvzjpygb" method="POST">
+                <input type="text" name="nom" placeholder="El teu nom" style="width:100%; margin-bottom:10px;" required>
+                <textarea name="missatge" placeholder="Explica'ns el teu record..." style="width:100%; height:80px;" required></textarea>
+                <button type="submit" style="background:#8D6E63; color:white; border:none; padding:10px; cursor:pointer;">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- El meu Compte -->
+    <div id="compte" class="content">
+    <div class="card">
+        <h2>El meu Compte</h2>
+        <p>Benvingut/da al teu espai personal de <strong>Memòria Viva</strong>.</p>
+        
+        <h3>El meu Progrés</h3>
+        <p>Has visitat els següents punts d'interès:</p>
+        <ul id="llista-punts">
+            <li>✅ Museu del Suro</li>
+            <li>⏳ Pendents: Ruta Josep Pla, Calella...</li>
+        </ul>
+
+        <h3>Per què registrar-se?</h3>
+        <p>En tenir un compte, pots:</p>
+        <ul>
+            <li>Guardar les teves històries i records.</li>
+            <li>Guanyar insígnies per cada ruta completada.</li>
+            <li>Participar activament en la comunitat de Palafrugell.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="login" class="content">
+    <div class="card">
+        <h2>Iniciar Sessió</h2>
+        <button onclick="googleLogin()" style="background:#4285f4; color:white; padding:10px; width:100%; border:none; cursor:pointer;">
+            Accedir amb Google
+        </button>
+        <button onclick="githubLogin()" style="background:#333; color:white; padding:10px; width:100%; border:none; cursor:pointer; margin-top: 10px;">
+    Accedir amb GitHub
+</button>
+        <p>No tens compte? <a onclick="showSection('registre')" style="cursor:pointer; color:blue;">Registra't aquí</a></p>
+    </div>
+</div>
+
+<div id="crear-compte" class="content">
+    <h3>Crea un compte</h3>
+    <input type="email" id="email-reg" placeholder="Correu electrònic">
+    <input type="password" id="password-reg" placeholder="Contrasenya">
+    <button onclick="registrarUsuari()">Registrar-se</button>
+        <p>Ja tens compte? <a onclick="showSection('login')" style="cursor:pointer; color:blue;">Inicia sessió aquí</a></p>
+    </div>
+</div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, signOut, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+
+    // Configuració
+    const firebaseConfig = {
+        apiKey: "AIzaSyAcw54dHgF0KaCUpeWMskJRD95MFYLQcTM",
+        authDomain: "memoriaviva-73f18.firebaseapp.com",
+        projectId: "memoriaviva-73f18",
+        storageBucket: "memoriaviva-73f18.firebasestorage.app",
+        messagingSenderId: "399272986615",
+        appId: "1:399272986615:web:9a5b9840ad9f21460310f2",
+        measurementId: "G-QCK7X61W33"
+    };
+
+    // Inicialització
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const analytics = getAnalytics(app);
+    const googleProvider = new GoogleAuthProvider();
+    const githubProvider = new GithubAuthProvider();
+
+    // 1. Funció REGISTRAR-SE (Correu i contrasenya)
+    window.registrarUsuari = () => {
+        const email = document.getElementById('email-reg').value;
+        const pass = document.getElementById('password-reg').value;
+
+        if(!email || !pass) {
+            alert("Si us plau, omple tots els camps.");
+            return;
+        }
+
+      createUserWithEmailAndPassword(auth, email, pass)
+        .then((userCredential) => {
+            alert("Compte creat!");
+            localStorage.setItem('usuariLoguejat', 'true'); // Afegim això
+            actualitzarMenu(); // <--- EL MENÚ CANVIA AL REGISTRAR-SE
+            showSection('inicio');
+        })
+        .catch((e) => alert("Error: " + e.message));
+};
+
+    // 2. Funció LOGIN GOOGLE
+    window.googleLogin = () => {
+        signInWithPopup(auth, googleProvider)
+            .then(() => { 
+                localStorage.setItem('usuariLoguejat', 'true'); 
+                location.reload(); 
+            })
+            .catch((e) => alert("Error Google: " + e.message));
+    };
+
+    // 3. Funció LOGIN GITHUB
+    window.githubLogin = () => {
+        signInWithPopup(auth, githubProvider)
+            .then(() => { 
+                localStorage.setItem('usuariLoguejat', 'true'); 
+                location.reload(); 
+            })
+            .catch((e) => alert("Error GitHub: " + e.message));
+    };
+
+    // 4. Funció TANCAR SESSIÓ
+    window.logout = () => {
+        signOut(auth).then(() => { 
+            localStorage.removeItem('usuariLoguejat'); 
+            location.reload(); 
+        });
+    };
+    function actualitzarMenu() {
+    const n = document.getElementById('nav-user-actions');
+    const estaLoguejat = localStorage.getItem('usuariLoguejat');
+
+    if (estaLoguejat) {
+        // Si l'usuari ha entrat, mostrem només el seu compte i sortir
+        n.innerHTML = `
+            <a onclick="showSection('compte')">El meu compte</a>
+            <a onclick="logout()">Tancar Sessió</a>
+        `;
+    } else {
+        // Si no, mostrem els botons d'entrada junts
+        n.innerHTML = `
+            <a onclick="showSection('login')">Iniciar Sessió</a>
+            <a onclick="showSection('crear-compte')">Crear Compte</a>
+        `;
+    }
+}
+</script>
+<script>
+    // Lògica de Navegació i Progrés
+    function showSection(id) {
+        if (id === 'participa' && !localStorage.getItem('usuariLoguejat')) {
+            alert("Has d'iniciar sessió.");
+            id = 'login';
+        }
+        if (['suro', 'pla', 'litoral', 'gastronomia'].includes(id)) marcarComVisitat(id);
+
+        document.querySelectorAll('.content').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(id === 'inicio' && typeof map !== 'undefined') setTimeout(() => map.invalidateSize(), 100);
+    }
+
+    function marcarComVisitat(id) {
+        let v = JSON.parse(localStorage.getItem('visites')) || [];
+        if (!v.includes(id)) { v.push(id); localStorage.setItem('visites', JSON.stringify(v)); actualitzarLlistaCompte(); }
+    }
+
+    function actualitzarLlistaCompte() {
+        const l = document.getElementById('llista-punts');
+        if (!l) return;
+        const v = JSON.parse(localStorage.getItem('visites')) || [];
+        const pts = { 'suro': 'Museu del Suro', 'pla': 'Josep Pla', 'litoral': 'El Litoral', 'gastronomia': 'Gastronomia', 'carnaval': 'Carnaval i Primavera', 'calendari': 'El Calendari de la Memòria', 'evolucio': 'Palafrugell, un viatge a través del temps' };
+        l.innerHTML = Object.keys(pts).map(k => `<li>${v.includes(k)?'✅':'⏳'} ${pts[k]}</li>`).join('');
+    }
+
+    function actualitzarMenu() {
+        const n = document.getElementById('nav-user-actions');
+        if (!n) return;
+        n.innerHTML = localStorage.getItem('usuariLoguejat') ? 
+            `<a onclick="showSection('compte')">Compte</a> <a onclick="logout()">Tancar Sessió</a>` : 
+            `<a onclick="showSection('login')">Iniciar Sessió</a>`;
+    }
+
+    window.onload = () => {
+        actualitzarMenu();
+        actualitzarLlistaCompte();
+    };
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
+</body>
+</html>
